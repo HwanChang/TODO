@@ -43,11 +43,12 @@ public class MemberService implements UserDetailsService {
         }
         memberSaveRequestDto.setRoles(role);
 
-        return memberRepository.save(memberSaveRequestDto.toEntity()).getMemberId();
+        return memberRepository.save(memberSaveRequestDto.toEntity()).getId();
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        // 사용자 Email 조회
         Optional<Member> userEntityWrapper = memberRepository.findByEmail(email);
         Member userEntity = userEntityWrapper.get();
 
@@ -56,7 +57,7 @@ public class MemberService implements UserDetailsService {
         // 사용자 Role 조회
         Optional<Role> roleEntityWrapper = roleRepository.findByEmail(email);
         Role roleEntity = roleEntityWrapper.get();
-        authorities.add(new SimpleGrantedAuthority(roleEntity.getRole().getValue()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + roleEntity.getRole().getValue()));
 
         return new User(userEntity.getEmail(), userEntity.getPassword(), authorities);
     }

@@ -3,6 +3,7 @@ package com.hwanchang.todo.web;
 import com.hwanchang.todo.dto.member.MemberSaveRequestDto;
 import com.hwanchang.todo.service.MemberService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Slf4j
 @Controller
 @AllArgsConstructor
 public class MemberController {
@@ -35,13 +37,8 @@ public class MemberController {
 
     @PostMapping("/signupprocess")
     public String signupprocess(MemberSaveRequestDto memberSaveRequestDto){
-        memberService.joinUser(memberSaveRequestDto);
+        Long result = memberService.joinUser(memberSaveRequestDto);
         return "redirect:/signin";
     }
 
-    @PostMapping("/signinprocess")
-    public String signinprocess(MemberSaveRequestDto memberSaveRequestDto){
-        memberService.loadUserByUsername(memberSaveRequestDto.getEmail());
-        return "redirect:/";
-    }
 }

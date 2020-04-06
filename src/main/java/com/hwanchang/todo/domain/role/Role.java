@@ -15,7 +15,7 @@ public class Role extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long roleId;
+    private Long id;
 
     @Column(nullable = false)
     private String email;
