@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,19 +25,19 @@ public class MemberController {
     }
 
     @GetMapping("/signup")
-    public String signup(Model model, HttpServletRequest req){
+    public String signup( Model model, HttpServletRequest req ) {
         model.addAttribute("message",req.getServletContext());
         return "signup";
     }
 
     @GetMapping("/signin")
-    public String signin(Model model, HttpServletRequest req){
+    public String signin( Model model, HttpServletRequest req ) {
         model.addAttribute("message",req.getServletContext());
         return "signin";
     }
 
     @PostMapping("/signupprocess")
-    public String signupprocess(MemberSaveRequestDto memberSaveRequestDto){
+    public String signupprocess( @RequestBody MemberSaveRequestDto memberSaveRequestDto ) {
         Long result = memberService.joinUser(memberSaveRequestDto);
         return "redirect:/signin";
     }
