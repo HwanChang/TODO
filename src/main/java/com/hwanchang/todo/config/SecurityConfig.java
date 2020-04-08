@@ -39,6 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**").hasAnyRole(Role.RoleType.ADMIN.getValue(), Role.RoleType.USER.getValue())
 //                .antMatchers("/**").permitAll()
         .and()
+            .csrf().ignoringAntMatchers("/h2-console/**")
+        .and()
             .headers().frameOptions().disable()
         .and()
             .formLogin()
