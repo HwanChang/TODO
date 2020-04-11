@@ -6,6 +6,7 @@ import com.hwanchang.todo.domain.role.Role;
 import com.hwanchang.todo.domain.role.RoleRepository;
 import com.hwanchang.todo.dto.member.MemberSaveRequestDto;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class MemberService implements UserDetailsService {
@@ -48,16 +50,22 @@ public class MemberService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        // 사용자 Email 조회
-        Optional<Member> userEntityWrapper = memberRepository.findByEmail(email);
-        Member userEntity = userEntityWrapper.get();
-
+        Member userEntity = null;
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        // 사용자 Role 조회
-        Optional<Role> roleEntityWrapper = roleRepository.findByEmail(email);
-        Role roleEntity = roleEntityWrapper.get();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + roleEntity.getRole().getValue()));
+        try {
+            // 사용자 Email 조회
+            Optional<Member> userEntityWrapper = memberRepository.findByEmail(email);
+            userEntity = userEntityWrapper.get();
+
+            // 사용자 Role 조회
+            Optional<Role> roleEntityWrapper = roleRepository.findByEmail(email);
+            Role roleEntity = roleEntityWrapper.get();
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + roleEntity.getRole().getValue()));
+        } catch (Exception e) {
+            log.error("{} 잘못된 사용자 정보", e.getMessage());
+            throw new UsernameNotFoundException(e.getMessage());
+        }
 
         return new User(userEntity.getEmail(), userEntity.getPassword(), authorities);
     }
