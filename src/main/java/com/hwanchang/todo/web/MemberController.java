@@ -36,9 +36,17 @@ public class MemberController {
         return "signin";
     }
 
-    @PostMapping("/signupprocess")
-    public String signupprocess( @RequestBody MemberSaveRequestDto memberSaveRequestDto ) {
-        Long result = memberService.joinUser(memberSaveRequestDto);
+    // 회원 가입 프로세스
+    @PostMapping("/signup/process")
+    public String signupProcess( HttpServletRequest request, MemberSaveRequestDto memberSaveRequestDto ) {
+        try {
+            log.info("회원 가입 Email : {}", memberSaveRequestDto.getEmail());
+            memberService.joinUser(memberSaveRequestDto);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            String referer = (String)request.getHeader("REFERER");
+            return "redirect:" + referer;
+        }
         return "redirect:/signin";
     }
 

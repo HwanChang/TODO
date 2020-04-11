@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private MemberService memberService;
+    private final MemberService memberService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/signin").permitAll()
                 .antMatchers("/signup").permitAll()
-                .antMatchers("/signupprocess").permitAll()
+                .antMatchers("/signup/process").permitAll()
                 .antMatchers("/**").hasAnyRole(Role.RoleType.ADMIN.getValue(), Role.RoleType.USER.getValue())
 //                .antMatchers("/**").permitAll()
         .and()
@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .logout()
             .invalidateHttpSession(true)
             .permitAll()
-		;
+        ;
 	}
 
     @Override
