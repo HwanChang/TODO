@@ -97,4 +97,66 @@ class MemberControllerTest {
         assertThat(userEntity.getName()).contains("박환창");
     }
 
+    @Test
+    void 로그인_테스트() throws Exception {
+        //when
+        MvcResult result_signup = mockMvc.perform(MockMvcRequestBuilders.post("/signup/process")
+                .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                .param(csrfToken.getParameterName(), csrfToken.getToken())
+                .contentType(APPLICATION_FORM_URLENCODED)
+                .param("email", "signin@gmail.com")
+                .param("name", "박환창")
+                .param("password", "P@ssword!"))
+                .andReturn();
+
+        MvcResult result_signin = mockMvc.perform(MockMvcRequestBuilders.post("/signin")
+                .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                .param(csrfToken.getParameterName(), csrfToken.getToken())
+                .contentType(APPLICATION_FORM_URLENCODED)
+                .param("username", "signin@gmail.com")
+                .param("password", "P@ssword!"))
+                .andExpect(redirectedUrl("/"))
+                .andReturn();
+    }
+
+    @Test
+    void Email_중복_체크_테스트() throws Exception {
+        //when
+        MvcResult result_fail = mockMvc.perform(MockMvcRequestBuilders.post("/check/duplication")
+                .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                .param(csrfToken.getParameterName(), csrfToken.getToken())
+                .contentType(APPLICATION_JSON)
+                .param("email", "duplication@gmail.com"))
+                .andReturn();
+
+        //then
+        String response_fail = result_fail.getResponse().getContentAsString();
+        log.info("Success (해당 Email 로 회원 가입 가능) - Response Content : " + response_fail);
+        assertThat(response_fail).isEqualTo("false");
+
+        //when
+        mockMvc.perform(MockMvcRequestBuilders.post("/signup/process")
+                .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                .param(csrfToken.getParameterName(), csrfToken.getToken())
+                .contentType(APPLICATION_FORM_URLENCODED)
+                .param("email", "duplication@gmail.com")
+                .param("name", "박환창")
+                .param("password", "P@ssword!"))
+                .andExpect(redirectedUrl("/signin"))
+                .andReturn();
+
+        MvcResult result_success = mockMvc.perform(MockMvcRequestBuilders.post("/check/duplication")
+                .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
+                .param(csrfToken.getParameterName(), csrfToken.getToken())
+                .contentType(APPLICATION_JSON)
+                .param("email", "duplication@gmail.com"))
+                .andReturn();
+
+        //then
+        String response_success = result_success.getResponse().getContentAsString();
+        log.info("Fail (해당 Email 로 회원 가입 불가) - Response Content : " + response_success);
+        assertThat(response_success).isEqualTo("true");
+
+    }
+
 }
