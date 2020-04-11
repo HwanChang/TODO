@@ -61,4 +61,11 @@ public class MemberService implements UserDetailsService {
 
         return new User(userEntity.getEmail(), userEntity.getPassword(), authorities);
     }
+
+    public boolean checkUserDuplication(String email) {
+        // 입력 Email 조회
+        Optional<Member> userEntityWrapper = memberRepository.findByEmail(email);
+        return userEntityWrapper.isPresent();
+    }
+
 }

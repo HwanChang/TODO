@@ -50,4 +50,17 @@ public class MemberController {
         return "redirect:/signin";
     }
 
+    // 회원 가입 Email 중복 체크
+    @PostMapping("/check/duplication")
+    @ResponseBody
+    public String checkDuplication( HttpServletRequest request, @RequestParam(value = "email") String email ) {
+        log.info("Check Duplication Email : {}", email);
+        /*
+            중복 체크 결과
+            true: 이미 존재 하는 Email
+            false: 사용 가능한 Email
+        */
+        return Boolean.toString(memberService.checkUserDuplication(email));
+    }
+
 }

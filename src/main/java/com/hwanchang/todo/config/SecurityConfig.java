@@ -36,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/signin").permitAll()
                 .antMatchers("/signup").permitAll()
                 .antMatchers("/signup/process").permitAll()
+                .antMatchers("/check/duplication").permitAll()
                 .antMatchers("/**").hasAnyRole(Role.RoleType.ADMIN.getValue(), Role.RoleType.USER.getValue())
 //                .antMatchers("/**").permitAll()
         .and()
