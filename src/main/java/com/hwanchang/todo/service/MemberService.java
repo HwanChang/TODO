@@ -26,8 +26,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class MemberService implements UserDetailsService {
 
-    private MemberRepository memberRepository;
-    private RoleRepository roleRepository;
+    private final MemberRepository memberRepository;
+    private final RoleRepository roleRepository;
 
     @Transactional
     public Long joinUser(MemberSaveRequestDto memberSaveRequestDto) {
