@@ -21,14 +21,14 @@ public class MemberRepositoryTest {
     MemberRepository memberRepository;
 
     @Test
-    public void 멤버정보_등록하기() {
+    public void 멤버_정보_등록_테스트 () {
         //given
+        LocalDateTime now = LocalDateTime.now();
         memberRepository.save(Member.builder()
-                .email("ghksckd219@gmail.com")
+                .email("join_test@gmail.com")
                 .password("p@ssword!")
                 .name("박환창")
                 .build());
-
         //when
         List<Member> memberList = memberRepository.findAll();
 
@@ -38,24 +38,8 @@ public class MemberRepositoryTest {
         log.info(member.getEmail());
         log.info(member.getName());
 
-        assertThat(member.getEmail()).isEqualTo("ghksckd219@gmail.com");
+        assertThat(member.getEmail()).isEqualTo("join_test@gmail.com");
         assertThat(member.getName()).isEqualTo("박환창");
-    }
-
-    @Test
-    public void BaseTimeEntity_등록 () {
-        //given
-        LocalDateTime now = LocalDateTime.now();
-        memberRepository.save(Member.builder()
-                .email("ghksckd219@gmail.com")
-                .password("p@ssword!")
-                .name("박환창")
-                .build());
-        //when
-        List<Member> memberList = memberRepository.findAll();
-
-        //then
-        Member member = memberList.get(0);
 
         log.info(member.getCreatedDate().toString());
         log.info(member.getModifiedDate().toString());
