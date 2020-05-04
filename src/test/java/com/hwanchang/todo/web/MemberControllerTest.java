@@ -46,19 +46,6 @@ class MemberControllerTest {
     CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new MockHttpServletRequest());
 
     @Test
-    void 회원가입_페이지_로딩테스트() throws Exception {
-        //when
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/join"))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        //then
-        String response = result.getResponse().getContentAsString();
-        log.info("Response Content : " + response);
-        assertThat(response).contains("회원가입 페이지");
-    }
-
-    @Test
     void 회원가입_테스트() throws Exception {
         //when
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/join/process")
