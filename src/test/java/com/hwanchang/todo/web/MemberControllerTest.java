@@ -48,7 +48,7 @@ class MemberControllerTest {
     @Test
     void 회원가입_페이지_로딩테스트() throws Exception {
         //when
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/signup"))
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/join"))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -61,43 +61,43 @@ class MemberControllerTest {
     @Test
     void 회원가입_테스트() throws Exception {
         //when
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/signup/process")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/join/process")
                 .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
                 .param(csrfToken.getParameterName(), csrfToken.getToken())
                 .contentType(APPLICATION_FORM_URLENCODED)
-                .param("email", "signup@gmail.com")
+                .param("email", "join@gmail.com")
                 .param("name", "박환창")
                 .param("password", "P@ssword!"))
-                .andExpect(redirectedUrl("/signin"))
+                .andExpect(redirectedUrl("/login"))
                 .andReturn();
 
         //then
-        Optional<Member> userEntityWrapper = memberRepository.findByEmail("signup@gmail.com");
+        Optional<Member> userEntityWrapper = memberRepository.findByEmail("join@gmail.com");
         Member userEntity = userEntityWrapper.get();
         log.info("E-mail : {}", userEntity.getEmail());
         log.info("Name : {}", userEntity.getName());
 
-        assertThat(userEntity.getEmail()).contains("signup@gmail.com");
+        assertThat(userEntity.getEmail()).contains("join@gmail.com");
         assertThat(userEntity.getName()).contains("박환창");
     }
 
     @Test
     void 로그인_테스트() throws Exception {
         //when
-        MvcResult result_signup = mockMvc.perform(MockMvcRequestBuilders.post("/signup/process")
+        MvcResult result_join = mockMvc.perform(MockMvcRequestBuilders.post("/join/process")
                 .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
                 .param(csrfToken.getParameterName(), csrfToken.getToken())
                 .contentType(APPLICATION_FORM_URLENCODED)
-                .param("email", "signin@gmail.com")
+                .param("email", "login@gmail.com")
                 .param("name", "박환창")
                 .param("password", "P@ssword!"))
                 .andReturn();
 
-        MvcResult result_signin = mockMvc.perform(MockMvcRequestBuilders.post("/signin")
+        MvcResult result_login = mockMvc.perform(MockMvcRequestBuilders.post("/login")
                 .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
                 .param(csrfToken.getParameterName(), csrfToken.getToken())
                 .contentType(APPLICATION_FORM_URLENCODED)
-                .param("username", "signin@gmail.com")
+                .param("username", "login@gmail.com")
                 .param("password", "P@ssword!"))
                 .andExpect(redirectedUrl("/"))
                 .andReturn();
@@ -119,14 +119,14 @@ class MemberControllerTest {
         assertThat(response_fail).isEqualTo("false");
 
         //when
-        mockMvc.perform(MockMvcRequestBuilders.post("/signup/process")
+        mockMvc.perform(MockMvcRequestBuilders.post("/join/process")
                 .sessionAttr(TOKEN_ATTR_NAME, csrfToken)
                 .param(csrfToken.getParameterName(), csrfToken.getToken())
                 .contentType(APPLICATION_FORM_URLENCODED)
                 .param("email", "duplication@gmail.com")
                 .param("name", "박환창")
                 .param("password", "P@ssword!"))
-                .andExpect(redirectedUrl("/signin"))
+                .andExpect(redirectedUrl("/login"))
                 .andReturn();
 
         MvcResult result_success = mockMvc.perform(MockMvcRequestBuilders.post("/check/duplication")

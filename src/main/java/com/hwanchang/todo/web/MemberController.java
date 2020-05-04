@@ -5,7 +5,6 @@ import com.hwanchang.todo.service.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,35 +26,35 @@ public class MemberController {
     }
 
     // 회원 가입 페이지
-    @GetMapping("/signup")
-    public String signup( Model model, HttpServletRequest req ) {
-        return "signup";
+    @GetMapping("/join")
+    public String join() {
+        return "join";
     }
 
     // 로그인 페이지
-    @GetMapping("/signin")
-    public String signin( Model model, HttpServletRequest req ) {
-        return "signin";
+    @GetMapping("/login")
+    public String login() {
+        return "login";
     }
 
     // 회원 가입 프로세스
-    @PostMapping("/signup/process")
-    public String signupProcess( HttpServletRequest request, MemberSaveRequestDto memberSaveRequestDto ) {
+    @PostMapping("/join/process")
+    public String joinProcess( HttpServletRequest request, MemberSaveRequestDto memberSaveRequestDto ) {
         try {
             log.info("회원 가입 Email : {}", memberSaveRequestDto.getEmail());
             memberService.joinUser(memberSaveRequestDto);
         } catch (Exception e) {
             log.error(e.getMessage());
-            String referer = (String)request.getHeader("REFERER");
+            String referer = request.getHeader("REFERER");
             return "redirect:" + referer;
         }
-        return "redirect:/signin";
+        return "redirect:/login";
     }
 
     // 회원 가입 Email 중복 체크
     @PostMapping("/check/duplication")
     @ResponseBody
-    public String checkDuplication( HttpServletRequest request, @RequestParam(value = "email") String email ) {
+    public String checkDuplication(@RequestParam(value = "email") String email) {
         log.info("Check Duplication Email : {}", email);
         /*
             중복 체크 결과

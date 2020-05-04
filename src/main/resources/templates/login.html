@@ -19,7 +19,7 @@
             <div class="card">
                 <h5 class="card-header">로그인</h5>
                 <div class="card-body">
-                    <form action='/signin' method='POST' >
+                    <form action='/login' method='POST' >
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                         <div class="form-group">
                             <label for="email"> 아이디</label>
@@ -36,7 +36,7 @@
                         </div>
                         <button name="submit" type="submit" class="btn btn-block btn-primary text-light">로그인</button>
                     </form>
-                    <button name="signup" onclick="window.location.href='signup'" class="btn btn-block btn-primary text-light">회원가입</button>
+                    <button name="join" onclick="window.location.href='join'" class="btn btn-block btn-primary text-light">회원가입</button>
                 </div>
             </div>
         </div>
