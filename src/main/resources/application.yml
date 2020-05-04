@@ -1,4 +1,9 @@
 spring:
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
