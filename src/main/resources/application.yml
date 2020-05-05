@@ -4,11 +4,6 @@ spring:
     hibernate:
       ddl-auto: update
 
-  thymeleaf:
-    prefix: classpath:/templates/
-    suffix: .html
-    cache: false
-
   h2:
     console:
       enabled: true

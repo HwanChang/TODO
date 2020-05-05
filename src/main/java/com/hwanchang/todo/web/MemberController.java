@@ -5,7 +5,6 @@ import com.hwanchang.todo.service.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,24 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 public class MemberController {
 
     private final MemberService memberService;
-
-    // 메인 페이지
-    @GetMapping("/")
-    public String index() {
-        return "index";
-    }
-
-    // 회원 가입 페이지
-    @GetMapping("/join")
-    public String join() {
-        return "join";
-    }
-
-    // 로그인 페이지
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
 
     // 회원 가입 프로세스
     @PostMapping("/join/process")
