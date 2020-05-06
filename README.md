@@ -1,1 +1,1 @@
-[Spring Boot + ReactJS] TODO List
+[Spring Boot] TODO List
